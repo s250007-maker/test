@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jumping Game</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- This is the font returned from Google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@700&display=swap" rel="stylesheet">
+    <style>
+    body { padding: 0; margin: 0; }
+
+    #container{
+        position: relative;
+        width: 100%;
+        height: 800px;
+        margin: auto;
+    }
+
+    /*background*/
+    #sky{
+        position: absolute;
+        background: rgba(135, 206, 235, 1);
+        left: 0px;
+        top: 0px;
+        width:100%;
+        height:100%;
+        z-index: -1;
+    }
+
+    #ground{
+        position: absolute;
+        background: rgba(34, 139, 34, 1);
+        left: 0px;
+        top: 500px;
+        width:100%;
+        height:300px;
+        z-index: -1;
+    }
+
+    .cloud{
+        position: absolute;
+        background: white;
+        width: 200px;
+        height: 60px;
+        top: 100px;
+        animation-name: cloudAnimation;
+        animation-timing-function: linear;
+        animation-duration: 10s;
+        animation-iteration-count: infinite;
+        overflow-x: hidden;
+    }
+
+    #cloud2{
+    }
+
+    #obstacle{
+        position: absolute;
+        top:120px;
+        display: none;
+        animation-name: none;
+        animation-timing-function: linear;
+        animation-duration: 3s;
+        animation-iteration-count: 1;
+        overflow-x: hidden;
+    }
+
+    #player{
+        position: absolute;
+        transform: translateY(0px);
+        top:320px;
+        left:30px;
+        animation-name: none;
+        animation-timing-function: ease-in-out ;
+        animation-duration: 0.8s;
+        animation-iteration-count: 1;
+    }
+
+    /* The container moves the text to the middle of the screen */
+    #gameover-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #gameover {
+        font-family: Dosis, sans-serif;
+        color:red;
+        font-size: 6rem;
+        display: none;
+        animation-name: none;
+        animation-duration: 0.2s;
+        animation-timing-function: linear;
+        animation-iteration-count: 3;
+    }
+
+    #score{
+        position: absolute;
+        top: 20px;
+        right: 60px;
+        font-family: Dosis, sans-serif;
+        font-size: 24px;
+    }
+
+    @keyframes cloudAnimation{
+        from{transform: translateX(2000px);}
+        to  {transform: translateX(-200px);}
+    }
+
+    @keyframes obstacleAnimation{
+        from{transform: translate(2000px,320px);}
+        to  {transform: translate(-150px,320px)}
+    }
+
+    @keyframes playerAnimation{
+        0%  {transform: translateY(0px);}
+        50% {transform: translateY(-160px);}
+        100%{transform: translateY(0px);}
+    }
+
+    @keyframes gameoverAnimation{
+        from{transform: rotate(0deg);}
+        to  {transform: rotate(360deg);}
+    }
+
+    </style>
+    <script>
+        let Obstacle_time = 3;
+        // Check whether the game is over if the player is near the obstacle
+        function checkGameover() {
+
+            // You need to keep on checking for the gameover situation here
+            // Read the transform property of the player and obstacle
+            let playerY = $('#player').css('transform').split(", ")[5].replace(")","");
+            // Extract the appropriate numbers
+            let obstacleX = $('#obstacle').css('transform').split(", ")[4];
+            console.log(playerY + " " + obstacleX);
+            // Compare the numbers for the gameover situation
+            if(playerY > -90 && obstacleX > 30 && obstacleX < 200){
+                $("#gameover").show();
+                $("#gameover").css("animation-name","gameoverAnimation");
+                $(".cloud").css("animation-play-state","paused");
+                $("#player").css("animation-play-state","paused");
+                $("#obstacle").css("animation-play-state","paused");
+            }else{
+                setTimeout(checkGameover, 50);
+            }
+        }
+
+        // Make an obstacle by starting the obstacle animation
+        function makeObstacle() {
+
+            // You need to show the obstacle and start the animation here
+        }
+
+        // Make the player jump by starting the player animation
+        function jump() {
+
+            // You need to start the player jumping animation here
+        }
+
+        $(function () {
+            // Handle the spacebar key for controlling the player
+            $(document).on("keydown", function(e) {
+                // The player jumps if the spacebar key is down
+                if (e.keyCode == 32){
+
+                }
+            });
+
+            // The obstacle animation has finished
+            $("#obstacle").on("animationend", function() {
+
+                // You need to hide the obstacle and stop the animation here
+
+                // You will make another obstacle later
+                // Obstacle Move faster
+                if(Obstacle_time>1){
+                    Obstacle_time -= 0.5;
+                }
+                $("#obstacle").css("animation-duration", Obstacle_time+"s")
+                setTimeout(makeObstacle, Math.random() * 2000);
+
+            });
+
+            // The player animation has finished
+            $("#player").on("animationend", function() {
+
+                // You need to stop the animation here
+            });
+
+            // Start the obstacle animation
+            setTimeout(makeObstacle, Math.random() * 2000);
+
+            // Start the game over checking
+            setTimeout(checkGameover, 100);
+        });
+    </script>
+</head>
+<body>
+    <div id="container">
+        <div id="sky">
+        </div>
+
+        <div id="ground">
+        </div>
+
+        <div class="cloud" id="cloud1">
+        </div>
+
+        <div class="cloud" id="cloud2">
+        </div>
+
+        <div id="obstacle">
+            <img src="https://png.pngtree.com/png-vector/20220118/ourmid/pngtree-no-obstacles-png-image_4303240.png" width="120" height="120"/>
+        </div>
+
+        <div id="player">
+            <img src="https://www.clipartmax.com/png/middle/11-112864_real-plankton-cliparts-spongebob-characters.png" width="150" height="220"/>
+        </div>
+        
+        <div id="score">
+            <p>Score: <span id="score-value">0</span></p>
+        </div>
+
+        <!-- The game over text -->
+        <div id="gameover-container">
+            <h1 id="gameover">Game Over</h1>
+        </div>
+    </div>
+</html>
