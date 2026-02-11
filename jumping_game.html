@@ -19,7 +19,7 @@
     /*background*/
     #sky{
         position: absolute;
-        background: rgba(135, 206, 235, 1);
+        background: linear-gradient(to bottom,lime,lightblue);
         left: 0px;
         top: 0px;
         width:100%;
@@ -50,9 +50,7 @@
         overflow-x: hidden;
     }
 
-    #cloud2{
-    }
-
+    
     #obstacle{
         position: absolute;
         top:120px;
@@ -151,6 +149,7 @@
         function makeObstacle() {
 
             // You need to show the obstacle and start the animation here
+            $('#obstacle').css("animation-name");
         }
 
         // Make the player jump by starting the player animation
@@ -164,7 +163,7 @@
             $(document).on("keydown", function(e) {
                 // The player jumps if the spacebar key is down
                 if (e.keyCode == 32){
-
+                  $("#player").css("animation-name","playerAnimation")
                 }
             });
 
@@ -172,7 +171,7 @@
             $("#obstacle").on("animationend", function() {
 
                 // You need to hide the obstacle and stop the animation here
-
+               
                 // You will make another obstacle later
                 // Obstacle Move faster
                 if(Obstacle_time>1){
@@ -186,7 +185,7 @@
             // The player animation has finished
             $("#player").on("animationend", function() {
 
-                // You need to stop the animation here
+                ('#player').css("animation-name","playerAnimation");
             });
 
             // Start the obstacle animation
@@ -218,7 +217,7 @@
         <div id="player">
             <img src="https://www.clipartmax.com/png/middle/11-112864_real-plankton-cliparts-spongebob-characters.png" width="150" height="220"/>
         </div>
-        
+
         <div id="score">
             <p>Score: <span id="score-value">0</span></p>
         </div>
