@@ -112,18 +112,19 @@
 
     @keyframes playerAnimation{
         0%  {transform: translateY(0px);}
-        50% {transform: translateY(-160px);}
-        100%{transform: translateY(0px);}
+        50% {transform: translateY(-350px);}
+        
     }
 
-    @keyframes gameoverAnimation{
-        from{transform: rotate(0deg);}
-        to  {transform: rotate(360deg);}
+    @keyframes gameoverAnimation {
+        from{transform: rotate(0deg)}
+        to{transform:rotate(200deg)}
     }
 
     </style>
     <script>
         let Obstacle_time = 3;
+        let score=0;
         // Check whether the game is over if the player is near the obstacle
         function checkGameover() {
 
@@ -134,7 +135,7 @@
             let obstacleX = $('#obstacle').css('transform').split(", ")[4];
             console.log(playerY + " " + obstacleX);
             // Compare the numbers for the gameover situation
-            if(playerY > -90 && obstacleX > 30 && obstacleX < 200){
+            if(playerY > -90 && obstacleX > 40 && obstacleX <200){
                 $("#gameover").show();
                 $("#gameover").css("animation-name","gameoverAnimation");
                 $(".cloud").css("animation-play-state","paused");
@@ -149,7 +150,8 @@
         function makeObstacle() {
 
             // You need to show the obstacle and start the animation here
-            $('#obstacle').css("animation-name");
+            $("#obstacle").show();
+            $("#obstacle").css("animation-name","obstacleAnimation");
         }
 
         // Make the player jump by starting the player animation
@@ -169,13 +171,16 @@
 
             // The obstacle animation has finished
             $("#obstacle").on("animationend", function() {
+            score+=10;
+            $("#score-value").html(score);
 
                 // You need to hide the obstacle and stop the animation here
-               
+               $("#obstacle").hide();
+               $("#obstacle").css("animation-name","none");
                 // You will make another obstacle later
                 // Obstacle Move faster
                 if(Obstacle_time>1){
-                    Obstacle_time -= 0.5;
+                    Obstacle_time -= 0.8;
                 }
                 $("#obstacle").css("animation-duration", Obstacle_time+"s")
                 setTimeout(makeObstacle, Math.random() * 2000);
@@ -184,8 +189,8 @@
 
             // The player animation has finished
             $("#player").on("animationend", function() {
-
-                ('#player').css("animation-name","playerAnimation");
+            
+                $('#player').css("animation-name","none");
             });
 
             // Start the obstacle animation
@@ -215,11 +220,11 @@
         </div>
 
         <div id="player">
-            <img src="https://www.clipartmax.com/png/middle/11-112864_real-plankton-cliparts-spongebob-characters.png" width="150" height="220"/>
+            <img src="mario.png" width="170 " height="220"/>
         </div>
 
         <div id="score">
-            <p>Score: <span id="score-value">0</span></p>
+            <h1>Score: <span id="score-value">0</span></h1>
         </div>
 
         <!-- The game over text -->
